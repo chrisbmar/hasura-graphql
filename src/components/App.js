@@ -1,11 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {
-  ApolloClient,
-  ApolloProvider,
-  InMemoryCache,
-  HttpLink
-} from "@apollo/client";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { WebSocketLink } from "@apollo/client/link/ws";
 
 import Header from "./Header";
 import TodoPrivateWrapper from "./Todo/TodoPrivateWrapper";
@@ -22,10 +18,15 @@ const App = ({ idToken }) => {
 
   const createApolloClient = authToken => {
     return new ApolloClient({
-      link: new HttpLink({
-        uri: "https://hasura.io/learn/graphql",
-        headers: {
-          Authorization: `Bearer ${authToken}`
+      link: new WebSocketLink({
+        uri: "wss://hasura.io/learn/graphql",
+        options: {
+          reconnect: true,
+          connectionParams: {
+            headers: {
+              Authorization: `Bearer ${authToken}`
+            }
+          }
         }
       }),
       cache: new InMemoryCache()

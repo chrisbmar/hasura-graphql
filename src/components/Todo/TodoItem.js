@@ -90,7 +90,7 @@ const TodoItem = ({ todo }) => {
 };
 
 TodoItem.propTypes = {
-  todo: PropTypes.string
+  todo: PropTypes.object
 };
 
 export default TodoItem;
